@@ -22,8 +22,18 @@ def reply():
         res["reply"] += '\n' + ("Hi, thanks for contacting *The Red Velvet*.\nYou can choose from one of the options below: "
                     "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
                     "To get our *address*")
+        res["reply"] += '\n\n' + ("Please type your name and address to continue : \n\nName : \nAddress : ")
+        users.insert_one({"number": number, "status": "before_main", "item" : []})
+    elif user["status"] == "before_main":
+        res["reply"] += '\n' + ("Hi, thanks for contacting *The Red Velvet*.\nYou can choose from one of the options below: "
+                    "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
+                    "To get our *address*")
         res["reply"] += '\n\n' + ("If there's any late responds, Please send the same message until 2 or 3 times due to connection and server speed")
-        users.insert_one({"number": number, "status": "main", "messages": [], "item" : []})
+        
+        name = text[text.index('Name : ') + len('Name : '):text.index(' Address : ')]
+        address = text[text.index('Address : ') + len('Address : '):]
+        
+        users.insert_one({"number": number, "status": "main", "name": name, "address": address,  "item": []})
     elif user["status"] == "main":
         try:
             option = int(text)
@@ -132,7 +142,7 @@ def reply():
         res["reply"] += '\n\n' + ("If there's any late responds, Please send the same message until 2 or 3 times due to connection and server speed")
         users.update_one(
             {"number": number}, {"$set": {"status": "main"}})
-    users.update_one({"number": number}, {"$push": {"messages": {"text": text, "date": datetime.now()}}})
+    # users.update_one({"number": number}, {"$push": {"messages": {"text": text, "date": datetime.now()}}})
     return str(res)
 
 
