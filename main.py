@@ -19,10 +19,9 @@ def reply():
     user = users.find_one({"number": number})
     users_print = users.find_one({ "number": 'zharmedia' })
     if bool(user) == False:
-        res["reply"] += '\n' + ("Hi, thanks for contacting *The Red Velvet*.\nYou can choose from one of the options below: "
-                    "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
-                    "To get our *address*")
         res["reply"] += '\n\n' + ("Please type your name and address to continue : \n\nName : \nAddress : ")
+        res["reply"] += '\n\n' + ("*Note:*\nPlease use the the corect format to continue.\n\n*Example:*\nName : M Azhar\nAddress : Bandung")
+
         users.insert_one({"number": number, "status": "before_main", "item" : []})
     elif user["status"] == "before_main":
         res["reply"] += '\n' + ("Hi, thanks for contacting *The Red Velvet*.\nYou can choose from one of the options below: "
