@@ -13,4 +13,8 @@ address = string[string.index('Alamat: ') + len('Alamat: '):]
 # bahan = string[string.index('Bahan : ') + len('Bahan : '):string.index('\nUkuran : ')]
 # ukuran = string[string.index('Ukuran : ') + len('Ukuran : '):]
 
-print(address)
+# if "Nama: " in string and "Nomor WhatsApp: " in string and "Alamat: " in string:
+#     print(name)
+#     print(noWhatsApp)
+#     print(address)
+# print(address)

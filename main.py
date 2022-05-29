@@ -33,76 +33,97 @@ def reply():
     user = users.find_one({"number": number})
 
     # If the user is not saved in the database
+    # FORM INPUT KALAU USERS PERTAMA KALI CHAT SAMA BOT
     if bool(user) == False:
         # Ask the user to register first
         res["reply"] += '\n\n' + ("Sebelum melanjutkan isikan data Anda berikut ini. \n\nNama: \nNomor WhatsApp: \nAlamat: ")
         res["reply"] += '\n\n' + ("*Catatan:*\nFormat yang Anda digunakan pastikan sesuai.\n\n*Contoh:*\nNama: Asep Mulyana\nNomor WhatsApp: 081123456789\nAlamat: Jl. Raya Bogor KM.5, Bogor")
-        
+
         # Save the user's contact in the database        
         users.insert_one({"number": number, "status": "before_main", "cart" : []})
+
+    # WELCOMING MESSAGE
     elif user["status"] == "before_main":
         # Welcome the user
-        res["reply"] += '\n' + ("Halo, terima kasih telah menghubungi kami\nSelanjutnya, kamu dapat memilih salah satu menu di bawah ini:"
+        res["reply"] += '\n' + ("Halo, terima kasih telah menghubungi kami\nSelanjutnya, Anda dapat memilih salah satu menu di bawah ini:"
                     "\n\n*Ketik*\n\n 1️⃣ Untuk *memesan produk* \n 2️⃣ Untuk mengetahui *kontak penjual*\n 3️⃣ Untuk melihat *jam kerja* \n 4️⃣ "
                     "Untuk mendapatkan *alamat penjual*")
-        res["reply"] += '\n\n' + ("Jika respon yang diberikan lambat, silahkan kirim pesan yang sama sebanyak 2 atau 3 kali\nHal ini mungkin terjadi karena koneksi buruk atau server yang sedang lambat")
+        res["reply"] += '\n\n' + ("Jika respon yang diberikan lambat, silahkan kirim pesan yang sama sebanyak 2 atau 3 kali\n"
+                    "Hal ini mungkin terjadi karena koneksi buruk atau server yang sedang lambat")
         
-        # Get the user's name, address, and No.WhatsApp from the request
-        name = text[text.index('Nama: ') + len('Nama: '):text.index('\nNomor WhatsApp: ')]
-        noWhatsApp = text[text.index('Nomor WhatsApp: ') + len('Nomor WhatsApp: '):text.index('\nAlamat: ')]
-        address = text[text.index('Alamat: ') + len('Alamat: '):]
+        # Check first if the user's new
+        if "Nama: " in text and "Nomor WhatsApp: " in text and "Alamat: " in text:
+            # Get the user's name, address, and No.WhatsApp from the request
+            name = text[text.index('Nama: ') + len('Nama: '):text.index('\nNomor WhatsApp: ')]
+            noWhatsApp = text[text.index('Nomor WhatsApp: ') + len('Nomor WhatsApp: '):text.index('\nAlamat: ')]
+            address = text[text.index('Alamat: ') + len('Alamat: '):]
 
-        # Update the user's data in the database
-        users.update_one({"number": number}, {"$set": {"status": "main", "name": name, "noWhatsApp": noWhatsApp, "address": address, "cart": []}})
+            # Update the user's data in the database
+            users.update_one({"number": number}, {"$set": {"status": "main", "name": name, "noWhatsApp": noWhatsApp, "address": address, "cart": []}})
+        else:
+            users.update_one(
+                    {"number": number}, {"$set": {"status": "main"}})
+
+    # RESPON PILIHAN DARI WELCOMING MESSAGE
     elif user["status"] == "main":
         try:
+            # Get the user's choice from the request
             option = int(text)
         except:
-            # if the input is exclude the available choice
-            res["reply"] += '\n' + ("Please enter a valid response \n")
-            res["reply"] += '\n' + ("You can choose from one of the options below: "
-                    "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
-                    "To get our *address*")
+            # If the user's choice is not an integer
+            res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
+            res["reply"] += '\n' + ("Anda dapat memilih salah satu menu di bawah ini:"
+                    "\n\n*Ketik*\n\n 1️⃣ Untuk *memesan produk* \n 2️⃣ Untuk mengetahui *kontak penjual*\n 3️⃣ Untuk melihat *jam kerja* \n 4️⃣ "
+                    "Untuk mendapatkan *alamat penjual*")
             return str(res)
 
-        if option == 1:
+
+        # Process for every user's choice
+        if option == 1: # Pemesanan Produk
             res["reply"] += '\n' + (
-                "Anda bisa menghubungi kami melalui \nemail : customizable_product@gmail.com\nno telp : +6281542346842 (Admin)") 
-        elif option == 2:
-            res["reply"] += '\n' + ("You have entered *ordering mode*.")
+                "Anda dapat memilih pilihan produk yang tersedia:\n\n1️⃣ Kaos \n2️⃣ Tumbler\n0️⃣ Kembali")
             users.update_one(
                 {"number": number}, {"$set": {"status": "ordering"}})
+        elif option == 2: # Kontak Penjual
             res["reply"] += '\n' + (
-                "You can select one of the following cakes to order: \n\n1️⃣ Red Velvet  \n2️⃣ Dark Forest \n3️⃣ Ice Cream Cake"
-                "\n4️⃣ Plum Cake \n5️⃣ Sponge Cake \n6️⃣ Genoise Cake \n7️⃣ Angel Cake \n8️⃣ Carrot Cake \n9️⃣ Fruit Cake  \n0️⃣ Go Back")
-        elif option == 3:
-            res["reply"] += '\n' + ("We work from *9 a.m. to 5 p.m*.")
-        elif option == 4:
+                "Anda bisa menghubungi kami melalui.\nemail: customizable_product@gmail.com\nno telp: +6281542346842 (Admin)") 
+        elif option == 3: # Jam Kerja
+            res["reply"] += '\n' + ("Kami siap melayani anda dari hari senin - jumat pukul 07.00 - 19.00 WIB, dan hari sabtu - minggu pukul 13.00 - 19.00 WIB.")
+        elif option == 4: # Alamat Penjual
             res["reply"] += '\n' + (
-                "We have multiple stores across the city. Our main center is at *Cibiru, Bandung*")
+                "Jl. Ciwaruga No.50, Ciwaruga, Kec. Parongpong, Kabupaten Bandung Barat, Jawa Barat 40559")
         else:
             # if the input is exclude the available choice
-            res["reply"] += '\n' + ("Please enter a valid response \n")
-            res["reply"] += '\n' + ("You can choose from one of the options below: "
-                    "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
-                    "To get our *address*")
+            res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
+            res["reply"] += '\n' + ("Anda dapat memilih salah satu menu di bawah ini:"
+                    "\n\n*Ketik*\n\n 1️⃣ Untuk *memesan produk* \n 2️⃣ Untuk mengetahui *kontak penjual*\n 3️⃣ Untuk melihat *jam kerja* \n 4️⃣ "
+                    "Untuk mendapatkan *alamat penjual*")
+
+    # UDAH MILIH KAOS, TUMBLER, ATAU KEMBALI TERUS DIKEMANAIN
     elif user["status"] == "ordering":
         try:
             option = int(text)
         except:
-            # if the input is exclude the available choice
-            res["reply"] += '\n' + ("Please enter a valid response \n")
-            res["reply"] += '\n' + ("You can choose from one of the options below: "
-                    "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
-                    "To get our *address*")
+            # If the user's choice is not an integer
+            res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
+            res["reply"] += '\n' + ("Anda dapat memilih salah satu menu di bawah ini:"
+                    "\n\n*Ketik*\n\n 1️⃣ Untuk *memesan produk* \n 2️⃣ Untuk mengetahui *kontak penjual*\n 3️⃣ Untuk melihat *jam kerja* \n 4️⃣ "
+                    "Untuk mendapatkan *alamat penjual*")
             return str(res)
-        if option == 0:
+
+        # Process for every user's choice 
+        if option == 0: # Kembali
+            res["reply"] += '\n' + ("Halo, terima kasih telah menghubungi kami\nSelanjutnya, Anda dapat memilih salah satu menu di bawah ini:"
+                    "\n\n*Ketik*\n\n 1️⃣ Untuk *memesan produk* \n 2️⃣ Untuk mengetahui *kontak penjual*\n 3️⃣ Untuk melihat *jam kerja* \n 4️⃣ "
+                    "Untuk mendapatkan *alamat penjual*")
+            res["reply"] += '\n\n' + ("Jika respon yang diberikan lambat, silahkan kirim pesan yang sama sebanyak 2 atau 3 kali\n"
+                    "Hal ini mungkin terjadi karena koneksi buruk atau server yang sedang lambat")
+
             users.update_one(
                 {"number": number}, {"$set": {"status": "main"}})
-            res["reply"] += '\n' + ("Go back to previous page")
-            res["reply"] += '\n' + ("You can choose from one of the options below: "
-                        "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
-                        "To get our *address*")
+
+    ############ SAMPE SINI UNTUK PEMROSESAN KAOS DAN TUMBLER MENDING JADI STATUS DAN PROSES TERSENDIRI
+
         elif 1 <= option <= 9:
             cakes = ["Red Velvet Cake", "Dark Forest Cake", "Ice Cream Cake",
                      "Plum Cake", "Sponge Cake", "Genoise Cake", "Angel Cake", "Carrot Cake", "Fruit Cake"]
@@ -120,10 +141,9 @@ def reply():
             res["reply"] += '\n\n' + ("1️⃣ Yes, i want to order other cakes \n2️⃣ No, it's enough")          
         else:
             # if the input is exclude the available choice
-            res["reply"] += '\n' + ("Please enter a valid response \n")
+            res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
             res["reply"] += '\n' + (
-                "You can select one of the following cakes to order: \n\n1️⃣ Red Velvet  \n2️⃣ Dark Forest \n3️⃣ Ice Cream Cake"
-                "\n4️⃣ Plum Cake \n5️⃣ Sponge Cake \n6️⃣ Genoise Cake \n7️⃣ Angel Cake \n8️⃣ Carrot Cake \n9️⃣ Fruit Cake  \n0️⃣ Go Back")
+                "Anda dapat memilih pilihan produk yang tersedia:\n\n1️⃣ Kaos \n2️⃣ Tumbler\n0️⃣ Kembali")
     elif user["status"] == "pending":
         selected_print = user["item"]
         try:
@@ -149,7 +169,7 @@ def reply():
             res["reply"] += '\n' + ("Please enter your address to confirm the order")
     elif user["status"] == "address":
         selected_print = user["item"]
-        res["reply"] += "\n" +  "Thanks for shopping with us 😊"
+        res["reply"] += "\n" +  "Terima kasih telah berbelanja di toko kami! 😊"
         res["reply"] += "\n" +  f"Your order for *{', '.join(selected_print)}* has been received and will be delivered within an hour"
         orders.insert_one({"number": number, "item": selected_print, "address": text, "order_time": datetime.now()})
         users.update_one(
