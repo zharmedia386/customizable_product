@@ -4,35 +4,56 @@ from datetime import datetime
 
 cluster = MongoClient("mongodb+srv://zhar:zhar@cluster0.e99t7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", tls=True, tlsAllowInvalidCertificates=True)
 
+# Connect to the database
 db = cluster["customizable_product"]
+
+# Connect to the collection
 users = db["users"]
 orders = db["orders"]
+items = db["items"]
 
+# Create the application
 app = Flask(__name__)
 
-
+# Create the routes
 @app.route("/", methods=["get", "post"])
-def reply():
-    text = request.form.get("message")
-    number = request.form.get("sender")
-    res = {"reply": ""}
-    user = users.find_one({"number": number})
-    users_print = users.find_one({ "number": 'zharmedia' })
-    if bool(user) == False:
-        res["reply"] += '\n\n' + ("Please type your name and address to continue : \n\nName : \nAddress : ")
-        res["reply"] += '\n\n' + ("*Note:*\nPlease use the the corect format to continue.\n\n*Example:*\nName : M Azhar\nAddress : Bandung")
 
-        users.insert_one({"number": number, "status": "before_main", "item" : []})
+# Create the function
+def reply():
+    # Get the message from the request
+    text = request.form.get("message")
+    
+    # Get the user's contact from the request
+    number = request.form.get("sender")
+
+    # Response to the user
+    res = {"reply": ""}
+
+    # Check if the user is saved in the database
+    user = users.find_one({"number": number})
+
+    # If the user is not saved in the database
+    if bool(user) == False:
+        # Ask the user to register first
+        res["reply"] += '\n\n' + ("Sebelum melanjutkan isikan data Anda berikut ini. \n\nNama: \nNomor WhatsApp: \nAlamat: ")
+        res["reply"] += '\n\n' + ("*Catatan:*\nFormat yang Anda digunakan pastikan sesuai.\n\n*Contoh:*\nNama: Asep Mulyana\nNomor WhatsApp: 081123456789\nAlamat: Jl. Raya Bogor KM.5, Bogor")
+        
+        # Save the user's contact in the database        
+        users.insert_one({"number": number, "status": "before_main", "cart" : []})
     elif user["status"] == "before_main":
-        res["reply"] += '\n' + ("Hi, thanks for contacting *The Red Velvet*.\nYou can choose from one of the options below: "
-                    "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
-                    "To get our *address*")
-        res["reply"] += '\n\n' + ("If there's any late responds, Please send the same message until 2 or 3 times due to connection and server speed")
+        # Welcome the user
+        res["reply"] += '\n' + ("Halo, terima kasih telah menghubungi kami\nSelanjutnya, kamu dapat memilih salah satu menu di bawah ini:"
+                    "\n\n*Ketik*\n\n 1️⃣ Untuk *memesan produk* \n 2️⃣ Untuk mengetahui *kontak penjual*\n 3️⃣ Untuk melihat *jam kerja* \n 4️⃣ "
+                    "Untuk mendapatkan *alamat penjual*")
+        res["reply"] += '\n\n' + ("Jika respon yang diberikan lambat, silahkan kirim pesan yang sama sebanyak 2 atau 3 kali\nHal ini mungkin terjadi karena koneksi buruk atau server yang sedang lambat")
         
-        name = text[text.index('Name : ') + len('Name : '):text.index(' Address : ')]
-        address = text[text.index('Address : ') + len('Address : '):]
-        
-        users.insert_one({"number": number, "status": "main", "name": name, "address": address,  "item": []})
+        # Get the user's name, address, and No.WhatsApp from the request
+        name = text[text.index('Nama: ') + len('Nama: '):text.index('\nNomor WhatsApp: ')]
+        noWhatsApp = text[text.index('Nomor WhatsApp: ') + len('Nomor WhatsApp: '):text.index('\nAlamat: ')]
+        address = text[text.index('Alamat: ') + len('Alamat: '):]
+
+        # Update the user's data in the database
+        users.update_one({"number": number}, {"$set": {"status": "main", "name": name, "noWhatsApp": noWhatsApp, "address": address, "cart": []}})
     elif user["status"] == "main":
         try:
             option = int(text)
@@ -46,7 +67,7 @@ def reply():
 
         if option == 1:
             res["reply"] += '\n' + (
-                "You can contact us through phone or e-mail.\n\n*Phone*: +62-xxxx-xxxx \n*E-mail* : redvelvet@gmail.com") 
+                "Anda bisa menghubungi kami melalui \nemail : customizable_product@gmail.com\nno telp : +6281542346842 (Admin)") 
         elif option == 2:
             res["reply"] += '\n' + ("You have entered *ordering mode*.")
             users.update_one(
@@ -140,7 +161,7 @@ def reply():
                      "To get our *address*")
         res["reply"] += '\n\n' + ("If there's any late responds, Please send the same message until 2 or 3 times due to connection and server speed")
         users.update_one(
-            {"number": number}, {"$set": {"status": "main"}})
+            {"number": number}, {"$set": {"status": "before_main"}})
     # users.update_one({"number": number}, {"$push": {"messages": {"text": text, "date": datetime.now()}}})
     return str(res)
 
