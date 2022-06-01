@@ -123,7 +123,8 @@ def reply():
                 {"number": number}, {"$set": {"status": "main"}})
 
     ############ SAMPE SINI UNTUK PEMROSESAN KAOS DAN TUMBLER MENDING JADI STATUS DAN PROSES TERSENDIRI
-
+        elif option == 1: # Kaos
+            res["reply"] += '\n' + ("https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg?w=2000")
         elif 1 <= option <= 9:
             cakes = ["Red Velvet Cake", "Dark Forest Cake", "Ice Cream Cake",
                      "Plum Cake", "Sponge Cake", "Genoise Cake", "Angel Cake", "Carrot Cake", "Fruit Cake"]
