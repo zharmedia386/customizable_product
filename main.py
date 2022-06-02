@@ -125,19 +125,19 @@ def reply():
     ############ SAMPE SINI UNTUK PEMROSESAN KAOS DAN TUMBLER MENDING JADI STATUS DAN PROSES TERSENDIRI
         elif option == 1: # Kaos
             # Link Kaos
-            link_kaos_polos = items.find({"item_name": "Kaos Polos"})["photo"]
+            link_kaos_polos = items.find({"item_name": "Kaos Polos"})
             link_kaos_motif = items.find({"item_name": "Kaos Motif"})["photo"]
             link_kaos_jepang = items.find({"item_name": "Kaos Jepang"})["photo"]
 
             # Response message
             res["reply"] += '\n' + ("Kaos tersedia dalam berbagai ukuran dan desain.")
             res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk kaos di bawah ini:"
-                    f"\n\n*Ketik*\n\n 1️⃣ *Kaos Motif* \n {link_kaos_motif} \n 2️⃣ *Kaos Polos*\n{link_kaos_polos} \n 3️⃣ *Kaos Jepang* \n {link_kaos_jepang} \n 4️⃣ "
+                    f"\n\n*Ketik*\n\n 1️⃣ *Kaos Motif* \n {link_kaos_polos} \n 2️⃣ *Kaos Polos*\n{link_kaos_polos} \n 3️⃣ *Kaos Jepang* \n {link_kaos_polos} \n 4️⃣ "
                     "*Kaos Custom*")
 
             # Show jumlah kaos
-            size_s = items.find_one({"item_name": "Kaos Polos"})["quantity"]["s"]
-            res["reply"] += '\n\n' + (f"Ukuran S ada sebanyak: {size_s}")
+            # size_s = items.find_one({"item_name": "Kaos Polos"})["quantity"]["s"]
+            # res["reply"] += '\n\n' + (f"Ukuran S ada sebanyak: {size_s}")
 
 
         # elif 1 <= option <= 9:
@@ -150,8 +150,8 @@ def reply():
 
         #     # selected_print : spesifik menu yg dipilih user tertentu
         #     selected_print = users.find_one({"number": number})
-        #     print(selected_print["item"])
-        #     print_temp = selected_print["item"]
+        #     print(selected_print["iprint["item"]tem"])
+        #     print_temp = selected_
         #     res["reply"] += '\n' + ("Excellent choice 😉")
         #     res["reply"] += '\n' + (f"You already choose *{', '.join(print_temp)}*. Is there any other choices?")
         #     res["reply"] += '\n\n' + ("1️⃣ Yes, i want to order other cakes \n2️⃣ No, it's enough")   
