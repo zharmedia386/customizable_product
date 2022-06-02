@@ -125,9 +125,9 @@ def reply():
     ############ SAMPE SINI UNTUK PEMROSESAN KAOS DAN TUMBLER MENDING JADI STATUS DAN PROSES TERSENDIRI
         elif option == 1: # Kaos
             # Link Kaos
-            link_kaos_polos = items.find({"name": "Kaos Polos"})["photo"]
-            link_kaos_motif = items.find({"name": "Kaos Motif"})["photo"]
-            link_kaos_jepang = items.find({"name": "Kaos Jepang"})["photo"]
+            link_kaos_polos = items.find({"item_name": "Kaos Polos"})["photo"]
+            link_kaos_motif = items.find({"item_name": "Kaos Motif"})["photo"]
+            link_kaos_jepang = items.find({"item_name": "Kaos Jepang"})["photo"]
 
             # Response message
             res["reply"] += '\n' + ("Kaos tersedia dalam berbagai ukuran dan desain.")
@@ -136,7 +136,7 @@ def reply():
                     "*Kaos Custom*")
 
             # Show jumlah kaos
-            size_s = items.find_one({"name": "Kaos Polos"})["quantity"]["s"]
+            size_s = items.find_one({"item_name": "Kaos Polos"})["quantity"]["s"]
             res["reply"] += '\n\n' + (f"Ukuran S ada sebanyak: {size_s}")
 
 
