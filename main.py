@@ -124,22 +124,38 @@ def reply():
 
     ############ SAMPE SINI UNTUK PEMROSESAN KAOS DAN TUMBLER MENDING JADI STATUS DAN PROSES TERSENDIRI
         elif option == 1: # Kaos
-            res["reply"] += '\n' + ("https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg?w=2000")
-        elif 1 <= option <= 9:
-            cakes = ["Red Velvet Cake", "Dark Forest Cake", "Ice Cream Cake",
-                     "Plum Cake", "Sponge Cake", "Genoise Cake", "Angel Cake", "Carrot Cake", "Fruit Cake"]
-            selected = (cakes[option - 1])
-            users.update_one({"number": number}, {"$push": {"item": selected}})
-            users.update_one(
-                {"number": number}, {"$set": {"status": "pending"}})
+            # Link Kaos
+            link_kaos_polos = items.find({"name": "Kaos Polos"})["photo"]
+            link_kaos_motif = items.find({"name": "Kaos Motif"})["photo"]
+            link_kaos_jepang = items.find({"name": "Kaos Jepang"})["photo"]
 
-            # selected_print : spesifik menu yg dipilih user tertentu
-            selected_print = users.find_one({"number": number})
-            print(selected_print["item"])
-            print_temp = selected_print["item"]
-            res["reply"] += '\n' + ("Excellent choice 😉")
-            res["reply"] += '\n' + (f"You already choose *{', '.join(print_temp)}*. Is there any other choices?")
-            res["reply"] += '\n\n' + ("1️⃣ Yes, i want to order other cakes \n2️⃣ No, it's enough")          
+            # Response message
+            res["reply"] += '\n' + ("Kaos tersedia dalam berbagai ukuran dan desain.")
+            res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk kaos di bawah ini:"
+                    f"\n\n*Ketik*\n\n 1️⃣ *Kaos Motif* \n {link_kaos_motif} \n 2️⃣ *Kaos Polos*\n{link_kaos_polos} \n 3️⃣ *Kaos Jepang* \n {link_kaos_jepang} \n 4️⃣ "
+                    "*Kaos Custom*")
+
+            # Show jumlah kaos
+            size_s = items.find_one({"name": "Kaos Polos"})["quantity"]["s"]
+            res["reply"] += '\n\n' + (f"Ukuran S ada sebanyak: {size_s}")
+
+
+        # elif 1 <= option <= 9:
+        #     cakes = ["Red Velvet Cake", "Dark Forest Cake", "Ice Cream Cake",
+        #              "Plum Cake", "Sponge Cake", "Genoise Cake", "Angel Cake", "Carrot Cake", "Fruit Cake"]
+        #     selected = (cakes[option - 1])
+        #     users.update_one({"number": number}, {"$push": {"item": selected}})
+        #     users.update_one(
+        #         {"number": number}, {"$set": {"status": "pending"}})
+
+        #     # selected_print : spesifik menu yg dipilih user tertentu
+        #     selected_print = users.find_one({"number": number})
+        #     print(selected_print["item"])
+        #     print_temp = selected_print["item"]
+        #     res["reply"] += '\n' + ("Excellent choice 😉")
+        #     res["reply"] += '\n' + (f"You already choose *{', '.join(print_temp)}*. Is there any other choices?")
+        #     res["reply"] += '\n\n' + ("1️⃣ Yes, i want to order other cakes \n2️⃣ No, it's enough")   
+        #        
         else:
             # if the input is exclude the available choice
             res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
