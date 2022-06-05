@@ -2,6 +2,7 @@ from flask import Flask, request
 from pymongo import MongoClient
 from datetime import datetime
 from bson.objectid import ObjectId
+import time
 
 cluster = MongoClient("mongodb+srv://zhar:zhar@cluster0.e99t7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", tls=True, tlsAllowInvalidCertificates=True)
 
@@ -32,6 +33,50 @@ def reply():
 
     # Check if the user is saved in the database
     user = users.find_one({"number": number})
+
+    # Kaos Polos
+    kaos_polos = items.find_one({"_id" : ObjectId("6298c1476c253522a321efea")})
+    name_kaos_polos = kaos_polos["item_name"]
+    link_kaos_polos = kaos_polos["photo"]
+    jumlah_kaos_polos = kaos_polos["quantity"]
+
+    # Kaos Motif
+    kaos_motif = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff4")})
+    name_kaos_motif= kaos_motif["item_name"]
+    link_kaos_motif= kaos_motif["photo"]
+    jumlah_kaos_motif = kaos_motif["quantity"]
+
+    # Kaos Jepang
+    kaos_jepang = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff5")})
+    name_kaos_jepang= kaos_jepang["item_name"]
+    link_kaos_jepang= kaos_jepang["photo"]
+    jumlah_kaos_jepang = kaos_jepang["quantity"]
+
+    # Kaos Custom
+    kaos_custom = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff6")})
+    name_kaos_custom= kaos_custom["item_name"]
+
+    #Tumbler Stainless
+    tumbler_stain = items.find_one({"_id" : ObjectId("6298c5936c253522a321eff8")})
+    name_tumbler_stain = tumbler_stain["item_name"]
+    link_tumbler_stain = tumbler_stain["photo"]
+    quantity_tumbler_stain = tumbler_stain["quantity"]
+
+    #Tumbler Kaca
+    tumbler_kaca = items.find_one({"_id" : ObjectId("6298c5936c253522a321eff9")})
+    name_tumbler_kaca = tumbler_kaca["item_name"]
+    link_tumbler_kaca = tumbler_kaca["photo"]
+    quantity_tumbler_kaca = tumbler_kaca["quantity"]
+
+    #Tumbler Motif
+    tumbler_motif = items.find_one({"_id" : ObjectId("6298c5936c253522a321effa")})
+    name_tumbler_motif = tumbler_motif["item_name"]
+    link_tumbler_motif = tumbler_motif["photo"]
+    quantity_tumbler_motif = tumbler_motif["quantity"]
+
+    #Tumbler Custom
+    tumbler_custom = items.find_one({"_id" : ObjectId("6298c5936c253522a321effb")})
+    name_tumbler_custom = tumbler_custom["item_name"]
 
     # If the user is not saved in the database
     # FORM INPUT KALAU USERS PERTAMA KALI CHAT SAMA BOT
@@ -76,7 +121,6 @@ def reply():
                     "\n\n*Ketik*\n\n 1️⃣ Untuk *memesan produk* \n 2️⃣ Untuk mengetahui *kontak penjual*\n 3️⃣ Untuk melihat *jam kerja* \n 4️⃣ "
                     "Untuk mendapatkan *alamat penjual*")
             return str(res)
-
 
         # Process for every user's choice
         if option == 1: # Pemesanan Produk
@@ -124,28 +168,6 @@ def reply():
 
         # KALAU MILIH KAOS
         elif option == 1: # Kaos
-            # Kaos Polos
-            kaos_polos = items.find_one({"_id" : ObjectId("6298c1476c253522a321efea")})
-            name_kaos_polos = kaos_polos["item_name"]
-            link_kaos_polos = kaos_polos["photo"]
-            jumlah_kaos_polos = kaos_polos["quantity"]
-
-            # Kaos Motif
-            kaos_motif = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff4")})
-            name_kaos_motif= kaos_motif["item_name"]
-            link_kaos_motif= kaos_motif["photo"]
-            jumlah_kaos_motif = kaos_motif["quantity"]
-
-            # Kaos Jepang
-            kaos_jepang = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff5")})
-            name_kaos_jepang= kaos_jepang["item_name"]
-            link_kaos_jepang= kaos_jepang["photo"]
-            jumlah_kaos_jepang = kaos_jepang["quantity"]
-
-            # Kaos Custom
-            kaos_custom = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff6")})
-            name_kaos_custom= kaos_custom["item_name"]
-
             # Response message
             res["reply"] += '\n' + ("Kaos tersedia dalam berbagai ukuran dan desain.")
             res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk kaos di bawah ini: \n\nKetik\n\n"
@@ -158,7 +180,21 @@ def reply():
             # Connecting to Form_Kaos
             users.update_one(
                 {"number": number}, {"$set": {"status": "form_kaos"}})
+        
+        # KALAU MILIH TUMBLER
+        elif option == 2: #Tumbler
+            # Response message
+            res["reply"] += '\n' + ("Tumbler tersedia dalam berbagai volume dan desain.")
+            res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk tumbler di bawah ini: \n\nKetik\n\n"
+                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n {link_tumbler_stain} \n\n"
+                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n {link_tumbler_kaca} \n\n"
+                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n {link_tumbler_motif} \n\n"
+                                      f"4️⃣ *{name_tumbler_custom}* \n\n"
+                                      f"0️⃣ *Kembali*")
 
+            #Connection to form_tumbler
+            users.update_one(
+                {"number": number}, {"$set": {"status": "form_tumbler"}})
         else:
             # if the input is exclude the available choice
             res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
@@ -195,14 +231,22 @@ def reply():
             users.update_one(
                 {"number": number}, {"$set": {"status": "pesen_lagi_gak"}})
 
+            # NAMA PRODUK YANG DIPILIH
+            kaos = ["Kaos Polos", "Kaos Motif", "Kaos Jepang"]
+            selected = (kaos[option - 1])
+            users.update_one({"number": number}, {"$set": {"item": selected}})
+
         # KALAU MILIH KAOS KUSTOM
         elif option == 4: 
             # Form Kaos Kustom
-            res["reply"] += '\n\n' + ("*Form Detail Pemesanan* \n Jenis kaos: [O-neck,Poloshirt]\n Panjang lengan: [panjang/pendek]\n Ukuran_kustom: [S/M/L/XL/XXL]\n Desain: \n Jumlah_kustom: ")
-            res["reply"] += '\n\n' + ("*Catatan:*\nFormat yang Anda digunakan pastikan sesuai.\n\nContoh:\nJenis kaos: O-neck\n Panjang lengan: panjang\n Ukuran_kustom: L\n Desain: https://i.ytimg.com/vi/wSo8yMXIK8M/maxresdefault.jpg\n Jumlah_kustom: 1\n")
+            res["reply"] += '\n\n' + ("*Form Detail Pemesanan* \n Jenis kaos: [O-neck,Poloshirt]\n Panjang lengan: [panjang/pendek]\n Ukuran: [S/M/L/XL/XXL]\n Desain: \n Jumlah: ")
+            res["reply"] += '\n\n' + ("*Catatan:*\nFormat yang Anda digunakan pastikan sesuai.\n\nContoh:\nJenis kaos: O-neck\n Panjang lengan: panjang\n Ukuran: L\n Desain: https://i.ytimg.com/vi/wSo8yMXIK8M/maxresdefault.jpg\n Jumlah: 1\n")
 
             users.update_one(
                 {"number": number}, {"$set": {"status": "pesen_lagi_gak"}})
+
+            # NAMA PRODUK YANG DIPILIH
+            users.update_one({"number": number}, {"$set": {"item": "Kaos Custom"}})
 
         # MILIH DI LUAR KAOS POLOS, MOTIF, JEPANG, DAN KUSTOM
         else:
@@ -215,63 +259,186 @@ def reply():
                     f"4️⃣ *{name_kaos_custom}* \n Kustomisasi kaos yang anda inginkan\n\n"
                     f"0️⃣ *Kembali*")
 
+    elif user["status"] == "form_tumbler":
+        try:
+            option = int(text)
+        except:
+            # If the user's choice is not an integer
+            res["reply"] += '\n' + ("Tumbler tersedia dalam berbagai volume dan desain.")
+            res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk tumbler di bawah ini: \n\nKetik\n\n"
+                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n {link_tumbler_stain} \n\n"
+                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n {link_tumbler_kaca} \n\n"
+                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n {link_tumbler_motif} \n\n"
+                                      f"4️⃣ *{name_tumbler_custom}* \n\n"
+                                      f"0️⃣ *Kembali*")
+            return str(res)
+
+        # KALAU MILIH KEMBALI
+        if option == 0:
+            res["reply"] += '\n' + (
+                "Anda dapat memilih pilihan produk yang tersedia:\n\n1️⃣ Kaos \n2️⃣ Tumbler\n0️⃣ Kembali")
+            users.update_one(
+                {"number": number}, {"$set": {"status": "ordering"}})
+
+        # KALAU MILIH TUMBLER STAIN, KACA, MOTIF
+        elif option == 1 or option == 2 or option == 3:
+            # Form Kaos Polos, Motif, dan Jepang
+            res["reply"] += '\n\n' + ("*Form Detail Pemesanan* \n Jumlah: ")
+            res["reply"] += '\n\n' + ("*Catatan:*\n- Jumlah yang dipesan tidak melebihi stok yang tersedia\n- Format yang Anda digunakan pastikan sesuai.\n\nJumlah: 3 \n")
+
+            users.update_one(
+                {"number": number}, {"$set": {"status": "pesen_lagi_gak"}})
+            
+            # NAMA PRODUK YANG DIPILIH
+            tumbler = ["Tumbler Stainless 600ml", "Tumbler Kaca 1L", "Tumbler Motif 600ml"]
+            selected = (tumbler[option - 1])
+            users.update_one({"number": number}, {"$set": {"item": selected}})
+
+        # KALAU MILIH TUMBLER KUSTOM
+        elif option == 4:
+            # Form Kaos Kustom
+            res["reply"] += '\n\n' + ("*Form Detail Pemesanan* \n Volume: [600ml/1L]\n Desain: \n Jumlah: ")
+            res["reply"] += '\n\n' + ("*Catatan:*\nFormat yang Anda digunakan pastikan sesuai.\n\nContoh:\nVolume: 1L\n Desain: https://i.ytimg.com/vi/wSo8yMXIK8M/maxresdefault.jpg\n Jumlah: 1\n")
+
+            users.update_one(
+                {"number": number}, {"$set": {"status": "pesen_lagi_gak"}})
+            
+            # NAMA PRODUK YANG DIPILIH
+            users.update_one({"number": number}, {"$set": {"item": "Tumbler Custom"}})
+
+        # MILIH DI LUAR TUMBLER STAIN, KACA, MOTIF, DAN KUSTOM
+        else:
+            # if the input is exclude the available choice
+            res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
+            res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk tumbler di bawah ini: \n\nKetik\n\n"
+                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n {link_tumbler_stain} \n\n"
+                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n {link_tumbler_kaca} \n\n"
+                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n {link_tumbler_motif} \n\n"
+                                      f"4️⃣ *{name_tumbler_custom}* \n\n"
+                                      f"0️⃣ *Kembali*")
+
     elif user["status"] == "pesen_lagi_gak":
     # KAOS
+        # Kustom (2)
+        if "Jenis kaos: " in text and "Panjang lengan: " in text  and "Ukuran: " in text and "Desain: " in text and "Jumlah: " in text:
+            jenis_2 = text[text.index('Jenis kaos: ') + len('Jenis kaos: '):text.index('\nPanjang lengan: ')]
+            panjang_lengan_2 = text[text.index('Panjang lengan: ') + len('Panjang lengan: '):text.index('\nUkuran: ')]
+            ukuran_2 = text[text.index('Ukuran: ') + len('Ukuran: '):text.index('\nDesain: ')]
+            desain_2 = text[text.index('Desain: ') + len('Desain: '):text.index('\nJumlah: ')]
+            jumlah_2 = text[text.index('Jumlah: ') + len('Jumlah: '):]
+
+            item_selected = users.find_one({"number": number})["item"]
+
+            # MASUKIN CART
+            users.update_one({"number": number}, {"$push": {"cart": {"item_name": item_selected, "jenis_kaos": jenis_2, "panjang_lengan": panjang_lengan_2, "ukuran": ukuran_2, "desain": desain_2, "jumlah": jumlah_2}}})
+            
         # Polos, Motif, dan Jepang (1)
-        if "Ukuran: " in text and "Jumlah: " in text:
+        elif "Ukuran: " in text and "Jumlah: " in text:
             ukuran_1 = text[text.index('Ukuran: ') + len('Ukuran: '):text.index('\nJumlah: ')]
             jumlah_1 = text[text.index('Jumlah: ') + len('Jumlah: ')]
             
-            # MASUKIN CART
-            users.update_one({"number": number}, {"$push": {"ukuran": ukuran_1, "jumlah": jumlah_1}})
-
-        # Kustom (2)
-        if "Jenis kaos: " in text and "Panjang lengan: " in text  and "Ukuran_kustom: " in text and "Desain: " in text and "Jumlah_kustom: " in text:
-            jenis_2 = text[text.index('Jenis kaos: ') + len('Jenis kaos: '):text.index('\nPanjang lengan: ')]
-            panjang_lengan_2 = text[text.index('Panjang lengan: ') + len('Panjang lengan: '):text.index('\nUkuran_kustom: ')]
-            ukuran_kustom_2 = text[text.index('Ukuran_kustom: ') + len('Ukuran_kustom: '):text.index('\nDesain: ')]
-            desain_2 = text[text.index('Desain: ') + len('Desain: '):text.index('\nJumlah_kustom: ')]
-            jumlah_kustom_2 = text[text.index('Jumlah_kustom: ') + len('Jumlah_kustom: '):]
+            item_selected = users.find_one({"number": number})["item"]
 
             # MASUKIN CART
-            users.update_one({"number": number}, {"$push": {"jenis_kaos": jenis_2, "panjang_lengan": panjang_lengan_2, "ukuran": ukuran_kustom_2, "desain": desain_2, "jumlah": jumlah_kustom_2}})
+            users.update_one({"number": number}, {"$push": {"cart": {"item_name": item_selected, "ukuran": ukuran_1, "jumlah": jumlah_1}}})
+    
+    # TUMBLER
+        # Kustom (4)
+        elif "Volume: " in text and "Desain: " in text  and "Jumlah: " in text:
+            volume_4 = text[text.index('Volume: ') + len('Volume: '):text.index('\nDesain: ')]
+            desain_4 = text[text.index('Desain: ') + len('Desain: '):text.index('\nJumlah: ')]
+            jumlah_4 = text[text.index('Jumlah: ') + len('Jumlah: '):]
+
+            item_selected = users.find_one({"number": number})["item"]
+
+            # MASUKIN CART
+            users.update_one({"number": number}, {"$push": {"cart": {"item_name": item_selected, "volume": volume_4, "desain": desain_4, "jumlah": jumlah_4}}})
+
+        # Stain, Kaca, Motif, dan Kustom (3)
+        elif "Jumlah: " in text:
+            jumlah_3 = text[text.index('Jumlah: ') + len('Jumlah: ')]
+            
+            item_selected = users.find_one({"number": number})["item"]
+
+            # MASUKIN CART
+            users.update_one({"number": number}, {"$push": {"cart": {"item_name": item_selected, "jumlah": jumlah_3}}})
 
         # PESEN LAGI NGGAK
-        cart_item = user["cart"]
+        cart = user["cart"]
+        
+        n = 1
         res["reply"] += '\n' + ("Pilihan menarik! 😉")
-        res["reply"] += '\n' + (f"Anda telah memesan *{', '.join(cart_item)}*. Apakah anda ingin memesan yang lain?")
-        res["reply"] += '\n\n' + ("1️⃣ Ya, saya ingin memesan lagi produk lainnya \n2️⃣ Tidak, sudah cukup")      
+        res["reply"] += '\n\n' + ("Pesanan  Anda: ")
+        time.sleep(1)
+        for item in cart:
+            if item["item_name"] == "Kaos Polos" or item["item_name"] == "Kaos Motif" or item["item_name"] == "Kaos Jepang":
+                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['ukuran']} - {item['jumlah']}*")
+            
+            elif item["item_name"] == "Kaos Custom":
+                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['jenis_kaos']} - {item['panjang_lengan']} - {item['ukuran']} - {item['desain']} - {item['jumlah']}*")
+            
+            elif item["item_name"] == "Tumbler Stainless 600ml" or item["item_name"] == "Tumbler Kaca 1L" or item["item_name"] == "Tumbler Motif 600ml":
+                res["reply"] += '\n' + (f"*{n}. {item['item_name']} {item['jumlah']}*")
+
+            elif item["item_name"] == "Tumbler Custom":
+                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['volume']} - {item['desain']} - {item['jumlah']}*")
+            
+            n += 1
+    
+        res["reply"] += '\n\n' + ("Apakah anda ingin memesan yang lain?\n")
+        res["reply"] += '\n' + ("1️⃣ Ya, saya ingin memesan lagi produk lainnya \n2️⃣ Tidak, sudah cukup")      
 
         users.update_one(
                 {"number": number}, {"$set": {"status": "pending"}})
 
     elif user["status"] == "pending":
-        # selected_print : spesifik menu yg dipilih user tertentu
-        selected_print = users.find_one({"number": number})
-        print(selected_print["item"])
-        print_temp = selected_print["item"]
-        res["reply"] += '\n' + ("Pilihan menarik! 😉")
-        res["reply"] += '\n' + (f"Anda telah memesan *{', '.join(print_temp)}*. Apakah anda ingin memesan yang lain?")
-        res["reply"] += '\n\n' + ("1️⃣ Ya, saya ingin memesan lagi produk lainnya \n2️⃣ Tidak, sudah cukup")      
+        try:
+            option = int(text)
+        except:
+            res["reply"] += '\n\n' + ("Apakah anda ingin memesan yang lain?")
+            res["reply"] += '\n' + ("1️⃣ Ya, saya ingin memesan lagi produk lainnya \n2️⃣ Tidak, sudah cukup")   
+            return str(res)
+        
+        if option == 1:
+            res["reply"] += '\n' + (
+                "Anda dapat memilih pilihan produk yang tersedia:\n\n1️⃣ Kaos \n2️⃣ Tumbler\n0️⃣ Kembali")
+            users.update_one(
+                {"number": number}, {"$set": {"status": "ordering"}})
+        elif option == 2:
+            users.update_one(
+                {"number": number}, {"$set": {"status": "form_bayar"}})
 
-    elif user["status"] == "address":
-        selected_print = user["item"]
-        res["reply"] += "\n" +  "Terima kasih telah berbelanja di toko kami! 😊"
-        res["reply"] += "\n" +  f"Your order for *{', '.join(selected_print)}* has been received and will be delivered within an hour"
-        orders.insert_one({"number": number, "item": selected_print, "address": text, "order_time": datetime.now()})
+            res["reply"] += '\n\n' + ("*Form Detail Pengiriman* \n Alamat Penerima: \n Nama Penerima: \n Telp. Penerima: \n")
+            res["reply"] += '\n\n' + ("*Catatan:*\nFormat yang Anda digunakan pastikan sesuai.\n\nContoh:\nAlamat Penerima: Jln. Mars no.15, Kecamatan Padasuka\nNama Penerima: Asep Mulyana\nTelp. Penerima: 0851-4235-2321\n")
+
+    elif user["status"] == "form_bayar":
+        if "Alamat Penerima: " in text and "Nama Penerima: " in text and "Telp. Penerima: " in text:
+            alamat_penerima = text[text.index('Alamat Penerima: ') + len('Alamat Penerima: '):text.index('\nNama Penerima: ')]
+            nama_penerima = text[text.index('Nama Penerima: ') + len('Nama Penerima: '):text.index('\nTelp. Penerima: ')]
+            telp_penerima = text[text.index('Telp. Penerima: ') + len('Telp. Penerima: '):]
+
+        # MASUKIN KE ORDERS
+
+        res["reply"] += "\n" +  "Terima kasih telah berbelanja di toko kami! 😊\n\n"
+        res["reply"] += "\n" +  "Pesanan dapat dibayarkan melalui transfer bank ke rekening berikut:\n\n"
+        res["reply"] += "\n" +  "Bank Mandiri: \n"
+        res["reply"] += "\n" +  "No. Rekening: 0987654321\n"
+        res["reply"] += "\n" +  "Atas Nama: PT. Customizable Product\n"
+
         users.update_one(
             {"number": number}, {"$set": {"status": "ordered"}})
-        users.update_one({"number": number}, {"$set": {"item": []}})
+        users.update_one({"number": number}, {"$unset": {"item": ""}})
+
     elif user["status"] == "ordered":
-        res["reply"] += "\n" +  ("Hi, thanks for contacting again.\nYou can choose from one of the options below: "
-                     "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
-                     "To get our *address*")
-        res["reply"] += '\n\n' + ("If there's any late responds, Please send the same message until 2 or 3 times due to connection and server speed")
-        users.update_one(
-            {"number": number}, {"$set": {"status": "before_main"}})
-    # users.update_one({"number": number}, {"$push": {"messages": {"text": text, "date": datetime.now()}}})
+        # Welcome the user
+        res["reply"] += '\n' + ("Halo, terima kasih telah menghubungi kami\nSelanjutnya, Anda dapat memilih salah satu menu di bawah ini:"
+                    "\n\n*Ketik*\n\n 1️⃣ Untuk *memesan produk* \n 2️⃣ Untuk mengetahui *kontak penjual*\n 3️⃣ Untuk melihat *jam kerja* \n 4️⃣ "
+                    "Untuk mendapatkan *alamat penjual*")
+        res["reply"] += '\n\n' + ("Jika respon yang diberikan lambat, silahkan kirim pesan yang sama sebanyak 2 atau 3 kali\n"
+                    "Hal ini mungkin terjadi karena koneksi buruk atau server yang sedang lambat")
+
     return str(res)
 
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run(port=5050)
