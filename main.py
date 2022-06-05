@@ -33,6 +33,49 @@ def reply():
     # Check if the user is saved in the database
     user = users.find_one({"number": number})
 
+    kaos_polos = items.find_one({"_id" : ObjectId("6298c1476c253522a321efea")})
+    name_kaos_polos = kaos_polos["item_name"]
+    link_kaos_polos = kaos_polos["photo"]
+    jumlah_kaos_polos = kaos_polos["quantity"]
+
+    # Kaos Motif
+    kaos_motif = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff4")})
+    name_kaos_motif= kaos_motif["item_name"]
+    link_kaos_motif= kaos_motif["photo"]
+    jumlah_kaos_motif = kaos_motif["quantity"]
+
+    # Kaos Jepang
+    kaos_jepang = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff5")})
+    name_kaos_jepang= kaos_jepang["item_name"]
+    link_kaos_jepang= kaos_jepang["photo"]
+    jumlah_kaos_jepang = kaos_jepang["quantity"]
+
+    # Kaos Custom
+    kaos_custom = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff6")})
+    name_kaos_custom= kaos_custom["item_name"]
+
+    #Tumbler Stainless
+    tumbler_stain = items.find_one({"_id" : ObjectId("6298c5936c253522a321eff8")})
+    name_tumbler_stain = tumbler_stain["item_name"]
+    link_tumbler_stain = tumbler_stain["photo"]
+    quantity_tumbler_stain = tumbler_stain["quantity"]
+
+    #Tumbler Kaca
+    tumbler_kaca = items.find_one({"_id" : ObjectId("6298c5936c253522a321eff9")})
+    name_tumbler_kaca = tumbler_kaca["item_name"]
+    link_tumbler_kaca = tumbler_kaca["photo"]
+    quantity_tumbler_kaca = tumbler_kaca["quantity"]
+
+    #Tumbler Motif
+    tumbler_motif = items.find_one({"_id" : ObjectId("6298c5936c253522a321effa")})
+    name_tumbler_motif = tumbler_motif["item_name"]
+    link_tumbler_motif = tumbler_motif["photo"]
+    quantity_tumbler_motif = tumbler_motif["quantity"]
+
+    #Tumbler Custom
+    tumbler_custom = items.find_one({"_id" : ObjectId("6298c5936c253522a321effb")})
+    name_tumbler_custom = tumbler_custom["item_name"]
+
     # If the user is not saved in the database
     # FORM INPUT KALAU USERS PERTAMA KALI CHAT SAMA BOT
     if bool(user) == False:
@@ -76,7 +119,6 @@ def reply():
                     "\n\n*Ketik*\n\n 1️⃣ Untuk *memesan produk* \n 2️⃣ Untuk mengetahui *kontak penjual*\n 3️⃣ Untuk melihat *jam kerja* \n 4️⃣ "
                     "Untuk mendapatkan *alamat penjual*")
             return str(res)
-
 
         # Process for every user's choice
         if option == 1: # Pemesanan Produk
@@ -124,28 +166,6 @@ def reply():
 
         # KALAU MILIH KAOS
         elif option == 1: # Kaos
-            # Kaos Polos
-            kaos_polos = items.find_one({"_id" : ObjectId("6298c1476c253522a321efea")})
-            name_kaos_polos = kaos_polos["item_name"]
-            link_kaos_polos = kaos_polos["photo"]
-            jumlah_kaos_polos = kaos_polos["quantity"]
-
-            # Kaos Motif
-            kaos_motif = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff4")})
-            name_kaos_motif= kaos_motif["item_name"]
-            link_kaos_motif= kaos_motif["photo"]
-            jumlah_kaos_motif = kaos_motif["quantity"]
-
-            # Kaos Jepang
-            kaos_jepang = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff5")})
-            name_kaos_jepang= kaos_jepang["item_name"]
-            link_kaos_jepang= kaos_jepang["photo"]
-            jumlah_kaos_jepang = kaos_jepang["quantity"]
-
-            # Kaos Custom
-            kaos_custom = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff6")})
-            name_kaos_custom= kaos_custom["item_name"]
-
             # Response message
             res["reply"] += '\n' + ("Kaos tersedia dalam berbagai ukuran dan desain.")
             res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk kaos di bawah ini: \n\nKetik\n\n"
@@ -159,6 +179,19 @@ def reply():
             users.update_one(
                 {"number": number}, {"$set": {"status": "form_kaos"}})
 
+        elif option == 2: #Tumbler
+            # Response message
+            res["reply"] += '\n' + ("Tumbler tersedia dalam berbagai volume dan desain.")
+            res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk tumbler di bawah ini: \n\nKetik\n\n"
+                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n {link_tumbler_stain} \n\n"
+                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n {link_tumbler_kaca} \n\n"
+                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n {link_tumbler_motif} \n\n"
+                                      f"4️⃣ *{name_tumbler_custom} \n\n"
+                                      f"0️⃣ *Kembali*")
+
+            #Connection to form_tumbler
+            users.update_one(
+                {"number": number}, {"$set": {"status": "form_tumbler"}})
         else:
             # if the input is exclude the available choice
             res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
@@ -214,6 +247,56 @@ def reply():
                     f"3️⃣ *{name_kaos_jepang}* \n {link_kaos_jepang} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_jepang['s']}   M: {jumlah_kaos_jepang['m']}   L: {jumlah_kaos_jepang['l']} \n XL: {jumlah_kaos_jepang['xl']}   XXL: {jumlah_kaos_jepang['xxl']}\n\n" 
                     f"4️⃣ *{name_kaos_custom}* \n Kustomisasi kaos yang anda inginkan\n\n"
                     f"0️⃣ *Kembali*")
+
+    elif user["status"] == "form_tumbler":
+        try:
+            option = int(text)
+        except:
+            # If the user's choice is not an integer
+            res["reply"] += '\n' + ("Tumbler tersedia dalam berbagai volume dan desain.")
+            res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk tumbler di bawah ini: \n\nKetik\n\n"
+                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n {link_tumbler_stain} \n\n"
+                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n {link_tumbler_kaca} \n\n"
+                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n {link_tumbler_motif} \n\n"
+                                      f"4️⃣ *{name_tumbler_custom} \n\n"
+                                      f"0️⃣ *Kembali*")
+            return str(res)
+
+        # KALAU MILIH KEMBALI
+        if option == 0:
+            res["reply"] += '\n' + (
+                "Anda dapat memilih pilihan produk yang tersedia:\n\n1️⃣ Kaos \n2️⃣ Tumbler\n0️⃣ Kembali")
+            users.update_one(
+                {"number": number}, {"$set": {"status": "ordering"}})
+
+        # KALAU MILIH BUKAN TUMBLER KUSTOM
+        elif option == 1 or option == 2 or option == 3:
+            # Form Kaos Polos, Motif, dan Jepang
+            res["reply"] += '\n\n' + ("*Form Detail Pemesanan* \n Jumlah: ")
+            res["reply"] += '\n\n' + ("*Catatan:*\n- Jumlah yang dipesan tidak melebihi stok yang tersedia\n- Format yang Anda digunakan pastikan sesuai.\n\nJumlah: 3 \n")
+
+            users.update_one(
+                {"number": number}, {"$set": {"status": "pesen_lagi_gak"}})
+
+        # KALAU MILIH KAOS KUSTOM
+        elif option == 4:
+            # Form Kaos Kustom
+            res["reply"] += '\n\n' + ("*Form Detail Pemesanan* \n Volume: [600ml/1L]\n Desain: \n Jumlah: ")
+            res["reply"] += '\n\n' + ("*Catatan:*\nFormat yang Anda digunakan pastikan sesuai.\n\nContoh:\nVolume: 1L\n Desain: https://i.ytimg.com/vi/wSo8yMXIK8M/maxresdefault.jpg\n Jumlah: 1\n")
+
+            users.update_one(
+                {"number": number}, {"$set": {"status": "pesen_lagi_gak"}})
+
+        # MILIH DI LUAR KAOS POLOS, MOTIF, JEPANG, DAN KUSTOM
+        else:
+            # if the input is exclude the available choice
+            res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
+            res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk kaos di bawah ini: \n\nKetik\n\n"
+                                      f"1️⃣ *{name_kaos_polos}* \n {link_kaos_polos} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_polos['s']}   M: {jumlah_kaos_polos['m']}   L: {jumlah_kaos_polos['l']} \n XL: {jumlah_kaos_polos['xl']}   XXL: {jumlah_kaos_polos['xxl']}\n\n"
+                                      f"2️⃣ *{name_kaos_motif}* \n {link_kaos_motif} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_motif['s']}   M: {jumlah_kaos_motif['m']}   L: {jumlah_kaos_motif['l']} \n XL: {jumlah_kaos_motif['xl']}   XXL: {jumlah_kaos_motif['xxl']}\n\n"
+                                      f"3️⃣ *{name_kaos_jepang}* \n {link_kaos_jepang} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_jepang['s']}   M: {jumlah_kaos_jepang['m']}   L: {jumlah_kaos_jepang['l']} \n XL: {jumlah_kaos_jepang['xl']}   XXL: {jumlah_kaos_jepang['xxl']}\n\n"
+                                      f"4️⃣ *{name_kaos_custom}* \n Kustomisasi kaos yang anda inginkan\n\n"
+                                      f"0️⃣ *Kembali*")
 
     elif user["status"] == "pesen_lagi_gak":
     # KAOS
