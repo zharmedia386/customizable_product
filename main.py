@@ -238,10 +238,8 @@ def reply():
 
         # PESEN LAGI NGGAK
         cart_item = user["cart"]
-        print(cart_item["item"])
-        print_temp = cart_item["item"]
         res["reply"] += '\n' + ("Pilihan menarik! 😉")
-        res["reply"] += '\n' + (f"Anda telah memesan *{', '.join(print_temp)}*. Apakah anda ingin memesan yang lain?")
+        res["reply"] += '\n' + (f"Anda telah memesan *{', '.join(cart_item)}*. Apakah anda ingin memesan yang lain?")
         res["reply"] += '\n\n' + ("1️⃣ Ya, saya ingin memesan lagi produk lainnya \n2️⃣ Tidak, sudah cukup")      
 
         users.update_one(
