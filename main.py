@@ -331,6 +331,9 @@ def reply():
 
             # MASUKIN CART
             users.update_one({"number": number}, {"$push": {"cart": {"item_name": item_selected, "jenis_kaos": jenis_2, "panjang_lengan": panjang_lengan_2, "ukuran": ukuran_2, "desain": desain_2, "jumlah": jumlah_2}}})
+
+            # NGECEK NONE ATAU TIDAK
+            cart_updated = users.find_one({"cart": {"$elemMatch": {"item_name": item_selected, "jenis_kaos": jenis_2, "panjang_lengan": panjang_lengan_2, "ukuran": ukuran_2, "desain": desain_2, "jumlah": jumlah_2}}})
             
         # Polos, Motif, dan Jepang (1)
         elif "Ukuran: " in text and "Jumlah: " in text:
@@ -341,6 +344,9 @@ def reply():
 
             # MASUKIN CART
             users.update_one({"number": number}, {"$push": {"cart": {"item_name": item_selected, "ukuran": ukuran_1, "jumlah": jumlah_1}}})
+
+            # NGECEK NONE ATAU TIDAK
+            cart_updated = users.find_one({"cart": {"$elemMatch": {"item_name": item_selected, "ukuran": ukuran_1, "jumlah": jumlah_1}}})
     
     # TUMBLER
         # Kustom (4)
@@ -354,6 +360,9 @@ def reply():
             # MASUKIN CART
             users.update_one({"number": number}, {"$push": {"cart": {"item_name": item_selected, "volume": volume_4, "desain": desain_4, "jumlah": jumlah_4}}})
 
+            # NGECEK NONE ATAU TIDAK
+            cart_updated = users.find_one({"cart": {"$elemMatch": {"item_name": item_selected, "volume": volume_4, "desain": desain_4, "jumlah": jumlah_4}}})
+
         # Stain, Kaca, Motif, dan Kustom (3)
         elif "Jumlah: " in text:
             jumlah_3 = text[text.index('Jumlah: ') + len('Jumlah: ')]
@@ -363,28 +372,60 @@ def reply():
             # MASUKIN CART
             users.update_one({"number": number}, {"$push": {"cart": {"item_name": item_selected, "jumlah": jumlah_3}}})
 
+            # NGECEK NONE ATAU TIDAK
+            cart_updated = users.find_one({"cart": {"$elemMatch": {"item_name": item_selected, "jumlah": jumlah_3}}})
+        
+        
         # PESEN LAGI NGGAK
-        cart = user["cart"]
+        cart = cart_updated["cart"]
+        print(cart)
+
+        item_selected = users.find_one({"number": number})["item"]
         
         n = 1
         res["reply"] += '\n' + ("Pilihan menarik! 😉")
         res["reply"] += '\n\n' + ("Pesanan  Anda: ")
-        time.sleep(1)
+        
         for item in cart:
             if item["item_name"] == "Kaos Polos" or item["item_name"] == "Kaos Motif" or item["item_name"] == "Kaos Jepang":
                 res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['ukuran']} - {item['jumlah']}*")
+
+                # GET JUMLAH PESANAN
+                jumlah_pesanan = int(item["jumlah"])
+
+                # PENGURANGAN STOK BERDASARKAN UKURAN
+                if item["ukuran"] == "S":
+                    items.update_one({"item_name": item_selected}, {"$inc": {"quantity.s": -jumlah_pesanan}})
+                elif item["ukuran"] == "M":
+                    items.update_one({"item_name": item_selected}, {"$inc": {"quantity.m": -jumlah_pesanan}})
+                elif item["ukuran"] == "L":
+                    items.update_one({"item_name": item_selected}, {"$inc": {"quantity.l": -jumlah_pesanan}})
+                elif item["ukuran"] == "XL":
+                    items.update_one({"item_name": item_selected}, {"$inc": {"quantity.xl": -jumlah_pesanan}})
+                elif item["ukuran"] == "XXL":
+                    items.update_one({"item_name": item_selected}, {"$inc": {"quantity.xxl": -jumlah_pesanan}})
             
             elif item["item_name"] == "Kaos Custom":
                 res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['jenis_kaos']} - {item['panjang_lengan']} - {item['ukuran']} - {item['desain']} - {item['jumlah']}*")
+
+                # KUSTOM TIDAK ADA PENGURANGAN STOK
             
             elif item["item_name"] == "Tumbler Stainless 600ml" or item["item_name"] == "Tumbler Kaca 1L" or item["item_name"] == "Tumbler Motif 600ml":
                 res["reply"] += '\n' + (f"*{n}. {item['item_name']} {item['jumlah']}*")
 
+                # GET JUMLAH PESANAN
+                jumlah_pesanan = int(item["jumlah"])
+
+                # PENGURANGAN STOK 
+                items.update_one({"item_name": item_selected}, {"$inc": {"quantity": -jumlah_pesanan}})
+
             elif item["item_name"] == "Tumbler Custom":
                 res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['volume']} - {item['desain']} - {item['jumlah']}*")
-            
+                
+                # KUSTOM TIDAK ADA PENGURANGAN STOK
+
             n += 1
-    
+        
         res["reply"] += '\n\n' + ("Apakah anda ingin memesan yang lain?\n")
         res["reply"] += '\n' + ("1️⃣ Ya, saya ingin memesan lagi produk lainnya \n2️⃣ Tidak, sudah cukup")      
 
@@ -408,7 +449,7 @@ def reply():
             users.update_one(
                 {"number": number}, {"$set": {"status": "form_bayar"}})
 
-            res["reply"] += '\n\n' + ("*Form Detail Pengiriman* \n Alamat Penerima: \n Nama Penerima: \n Telp. Penerima: \n")
+            res["reply"] += '\n\n' + ("*Form Detail Pengiriman* \nAlamat Penerima: \nNama Penerima: \nTelp. Penerima:")
             res["reply"] += '\n\n' + ("*Catatan:*\nFormat yang Anda digunakan pastikan sesuai.\n\nContoh:\nAlamat Penerima: Jln. Mars no.15, Kecamatan Padasuka\nNama Penerima: Asep Mulyana\nTelp. Penerima: 0851-4235-2321\n")
 
     elif user["status"] == "form_bayar":
@@ -419,11 +460,11 @@ def reply():
 
         # MASUKIN KE ORDERS
 
-        res["reply"] += "\n" +  "Terima kasih telah berbelanja di toko kami! 😊\n\n"
-        res["reply"] += "\n" +  "Pesanan dapat dibayarkan melalui transfer bank ke rekening berikut:\n\n"
-        res["reply"] += "\n" +  "Bank Mandiri: \n"
-        res["reply"] += "\n" +  "No. Rekening: 0987654321\n"
-        res["reply"] += "\n" +  "Atas Nama: PT. Customizable Product\n"
+        res["reply"] += "\n" +  "Terima kasih telah berbelanja di toko kami! 😊\n"
+        res["reply"] += "\n" +  "Pesanan dapat dibayarkan melalui transfer bank ke rekening berikut:\n"
+        res["reply"] += "\n" +  "*Bank Mandiri:*"
+        res["reply"] += "\n" +  "No. Rekening: 0987654321"
+        res["reply"] += "\n" +  "a.n. PT Customizable Product\n"
 
         users.update_one(
             {"number": number}, {"$set": {"status": "ordered"}})
@@ -437,8 +478,10 @@ def reply():
         res["reply"] += '\n\n' + ("Jika respon yang diberikan lambat, silahkan kirim pesan yang sama sebanyak 2 atau 3 kali\n"
                     "Hal ini mungkin terjadi karena koneksi buruk atau server yang sedang lambat")
 
+        users.update_one(
+            {"number": number}, {"$set": {"status": "main"}})
     return str(res)
 
 
 if __name__ == "__main__":
-    app.run(port=5050)
+    app.run(port=5000)
