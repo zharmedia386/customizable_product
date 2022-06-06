@@ -39,44 +39,52 @@ def reply():
     name_kaos_polos = kaos_polos["item_name"]
     link_kaos_polos = kaos_polos["photo"]
     jumlah_kaos_polos = kaos_polos["quantity"]
+    harga_kaos_polos = kaos_polos["harga"]
 
     # Kaos Motif
     kaos_motif = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff4")})
     name_kaos_motif= kaos_motif["item_name"]
     link_kaos_motif= kaos_motif["photo"]
     jumlah_kaos_motif = kaos_motif["quantity"]
+    harga_kaos_motif = kaos_motif["harga"]
 
     # Kaos Jepang
     kaos_jepang = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff5")})
     name_kaos_jepang= kaos_jepang["item_name"]
     link_kaos_jepang= kaos_jepang["photo"]
     jumlah_kaos_jepang = kaos_jepang["quantity"]
+    harga_kaos_jepang = kaos_jepang["harga"]
 
     # Kaos Custom
     kaos_custom = items.find_one({"_id" : ObjectId("6298c4646c253522a321eff6")})
     name_kaos_custom= kaos_custom["item_name"]
+    harga_kaos_custom= kaos_custom["harga"]
 
     #Tumbler Stainless
     tumbler_stain = items.find_one({"_id" : ObjectId("6298c5936c253522a321eff8")})
     name_tumbler_stain = tumbler_stain["item_name"]
     link_tumbler_stain = tumbler_stain["photo"]
     quantity_tumbler_stain = tumbler_stain["quantity"]
+    harga_tumbler_stain = tumbler_stain["harga"]
 
     #Tumbler Kaca
     tumbler_kaca = items.find_one({"_id" : ObjectId("6298c5936c253522a321eff9")})
     name_tumbler_kaca = tumbler_kaca["item_name"]
     link_tumbler_kaca = tumbler_kaca["photo"]
     quantity_tumbler_kaca = tumbler_kaca["quantity"]
+    harga_tumbler_kaca = tumbler_kaca["harga"]
 
     #Tumbler Motif
     tumbler_motif = items.find_one({"_id" : ObjectId("6298c5936c253522a321effa")})
     name_tumbler_motif = tumbler_motif["item_name"]
     link_tumbler_motif = tumbler_motif["photo"]
     quantity_tumbler_motif = tumbler_motif["quantity"]
+    harga_tumbler_motif = tumbler_motif["harga"]
 
     #Tumbler Custom
     tumbler_custom = items.find_one({"_id" : ObjectId("6298c5936c253522a321effb")})
     name_tumbler_custom = tumbler_custom["item_name"]
+    harga_tumbler_custom = tumbler_custom["harga"]
 
     # If the user is not saved in the database
     # FORM INPUT KALAU USERS PERTAMA KALI CHAT SAMA BOT
@@ -171,10 +179,10 @@ def reply():
             # Response message
             res["reply"] += '\n' + ("Kaos tersedia dalam berbagai ukuran dan desain.")
             res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk kaos di bawah ini: \n\nKetik\n\n"
-                    f"1️⃣ *{name_kaos_polos}* \n {link_kaos_polos} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_polos['s']}   M: {jumlah_kaos_polos['m']}   L: {jumlah_kaos_polos['l']} \n XL: {jumlah_kaos_polos['xl']}   XXL: {jumlah_kaos_polos['xxl']}\n\n" 
-                    f"2️⃣ *{name_kaos_motif}* \n {link_kaos_motif} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_motif['s']}   M: {jumlah_kaos_motif['m']}   L: {jumlah_kaos_motif['l']} \n XL: {jumlah_kaos_motif['xl']}   XXL: {jumlah_kaos_motif['xxl']}\n\n" 
-                    f"3️⃣ *{name_kaos_jepang}* \n {link_kaos_jepang} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_jepang['s']}   M: {jumlah_kaos_jepang['m']}   L: {jumlah_kaos_jepang['l']} \n XL: {jumlah_kaos_jepang['xl']}   XXL: {jumlah_kaos_jepang['xxl']}\n\n" 
-                    f"4️⃣ *{name_kaos_custom}* \n Kustomisasi kaos yang anda inginkan\n\n"
+                    f"1️⃣ *{name_kaos_polos}* \n Harga: {formatrupiah(harga_kaos_polos)} \n {link_kaos_polos} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_polos['s']}   M: {jumlah_kaos_polos['m']}   L: {jumlah_kaos_polos['l']} \n XL: {jumlah_kaos_polos['xl']}   XXL: {jumlah_kaos_polos['xxl']}\n\n" 
+                    f"2️⃣ *{name_kaos_motif}* \n Harga: {formatrupiah(harga_kaos_motif)} \n {link_kaos_motif} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_motif['s']}   M: {jumlah_kaos_motif['m']}   L: {jumlah_kaos_motif['l']} \n XL: {jumlah_kaos_motif['xl']}   XXL: {jumlah_kaos_motif['xxl']}\n\n" 
+                    f"3️⃣ *{name_kaos_jepang}* \n Harga: {formatrupiah(harga_kaos_jepang)} \n {link_kaos_jepang} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_jepang['s']}   M: {jumlah_kaos_jepang['m']}   L: {jumlah_kaos_jepang['l']} \n XL: {jumlah_kaos_jepang['xl']}   XXL: {jumlah_kaos_jepang['xxl']}\n\n" 
+                    f"4️⃣ *{name_kaos_custom}* \n Harga: {formatrupiah(harga_kaos_custom)} \n Kustomisasi kaos yang anda inginkan\n\n"
                     f"0️⃣ *Kembali*")
 
             # Connecting to Form_Kaos
@@ -186,10 +194,10 @@ def reply():
             # Response message
             res["reply"] += '\n' + ("Tumbler tersedia dalam berbagai volume dan desain.")
             res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk tumbler di bawah ini: \n\nKetik\n\n"
-                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n {link_tumbler_stain} \n\n"
-                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n {link_tumbler_kaca} \n\n"
-                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n {link_tumbler_motif} \n\n"
-                                      f"4️⃣ *{name_tumbler_custom}* \n\n"
+                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n Harga: {formatrupiah(harga_tumbler_stain)} \n {link_tumbler_stain} \n\n"
+                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n Harga: {formatrupiah(harga_tumbler_kaca)} \n {link_tumbler_kaca} \n\n"
+                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n Harga: {formatrupiah(harga_tumbler_motif)} \n {link_tumbler_motif} \n\n"
+                                      f"4️⃣ *{name_tumbler_custom}* \n Harga: {formatrupiah(harga_tumbler_custom)} \n\n"
                                       f"0️⃣ *Kembali*")
 
             #Connection to form_tumbler
@@ -208,10 +216,10 @@ def reply():
             # If the user's choice is not an integer
             res["reply"] += '\n' + ("Kaos tersedia dalam berbagai ukuran dan desain.")
             res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk kaos di bawah ini: \n\nKetik\n\n"
-                    f"1️⃣ *{name_kaos_polos}* \n {link_kaos_polos} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_polos['s']}   M: {jumlah_kaos_polos['m']}   L: {jumlah_kaos_polos['l']} \n XL: {jumlah_kaos_polos['xl']}   XXL: {jumlah_kaos_polos['xxl']}\n\n" 
-                    f"2️⃣ *{name_kaos_motif}* \n {link_kaos_motif} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_motif['s']}   M: {jumlah_kaos_motif['m']}   L: {jumlah_kaos_motif['l']} \n XL: {jumlah_kaos_motif['xl']}   XXL: {jumlah_kaos_motif['xxl']}\n\n" 
-                    f"3️⃣ *{name_kaos_jepang}* \n {link_kaos_jepang} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_jepang['s']}   M: {jumlah_kaos_jepang['m']}   L: {jumlah_kaos_jepang['l']} \n XL: {jumlah_kaos_jepang['xl']}   XXL: {jumlah_kaos_jepang['xxl']}\n\n" 
-                    f"4️⃣ *{name_kaos_custom}* \n Kustomisasi kaos yang anda inginkan\n\n"
+                    f"1️⃣ *{name_kaos_polos}* \n Harga: {formatrupiah(harga_kaos_polos)} \n {link_kaos_polos} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_polos['s']}   M: {jumlah_kaos_polos['m']}   L: {jumlah_kaos_polos['l']} \n XL: {jumlah_kaos_polos['xl']}   XXL: {jumlah_kaos_polos['xxl']}\n\n" 
+                    f"2️⃣ *{name_kaos_motif}* \n Harga: {formatrupiah(harga_kaos_motif)} \n {link_kaos_motif} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_motif['s']}   M: {jumlah_kaos_motif['m']}   L: {jumlah_kaos_motif['l']} \n XL: {jumlah_kaos_motif['xl']}   XXL: {jumlah_kaos_motif['xxl']}\n\n" 
+                    f"3️⃣ *{name_kaos_jepang}* \n Harga: {formatrupiah(harga_kaos_jepang)} \n {link_kaos_jepang} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_jepang['s']}   M: {jumlah_kaos_jepang['m']}   L: {jumlah_kaos_jepang['l']} \n XL: {jumlah_kaos_jepang['xl']}   XXL: {jumlah_kaos_jepang['xxl']}\n\n" 
+                    f"4️⃣ *{name_kaos_custom}* \n Harga: {formatrupiah(harga_kaos_custom)} \n Kustomisasi kaos yang anda inginkan\n\n"
                     f"0️⃣ *Kembali*")
             return str(res)
 
@@ -253,10 +261,10 @@ def reply():
             # if the input is exclude the available choice
             res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
             res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk kaos di bawah ini: \n\nKetik\n\n"
-                    f"1️⃣ *{name_kaos_polos}* \n {link_kaos_polos} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_polos['s']}   M: {jumlah_kaos_polos['m']}   L: {jumlah_kaos_polos['l']} \n XL: {jumlah_kaos_polos['xl']}   XXL: {jumlah_kaos_polos['xxl']}\n\n" 
-                    f"2️⃣ *{name_kaos_motif}* \n {link_kaos_motif} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_motif['s']}   M: {jumlah_kaos_motif['m']}   L: {jumlah_kaos_motif['l']} \n XL: {jumlah_kaos_motif['xl']}   XXL: {jumlah_kaos_motif['xxl']}\n\n" 
-                    f"3️⃣ *{name_kaos_jepang}* \n {link_kaos_jepang} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_jepang['s']}   M: {jumlah_kaos_jepang['m']}   L: {jumlah_kaos_jepang['l']} \n XL: {jumlah_kaos_jepang['xl']}   XXL: {jumlah_kaos_jepang['xxl']}\n\n" 
-                    f"4️⃣ *{name_kaos_custom}* \n Kustomisasi kaos yang anda inginkan\n\n"
+                    f"1️⃣ *{name_kaos_polos}* \n Harga: {formatrupiah(harga_kaos_polos)} \n {link_kaos_polos} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_polos['s']}   M: {jumlah_kaos_polos['m']}   L: {jumlah_kaos_polos['l']} \n XL: {jumlah_kaos_polos['xl']}   XXL: {jumlah_kaos_polos['xxl']}\n\n" 
+                    f"2️⃣ *{name_kaos_motif}* \n Harga: {formatrupiah(harga_kaos_motif)} \n {link_kaos_motif} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_motif['s']}   M: {jumlah_kaos_motif['m']}   L: {jumlah_kaos_motif['l']} \n XL: {jumlah_kaos_motif['xl']}   XXL: {jumlah_kaos_motif['xxl']}\n\n" 
+                    f"3️⃣ *{name_kaos_jepang}* \n Harga: {formatrupiah(harga_kaos_jepang)} \n {link_kaos_jepang} \n Jumlah berdasarkan ukuran: \n S: {jumlah_kaos_jepang['s']}   M: {jumlah_kaos_jepang['m']}   L: {jumlah_kaos_jepang['l']} \n XL: {jumlah_kaos_jepang['xl']}   XXL: {jumlah_kaos_jepang['xxl']}\n\n" 
+                    f"4️⃣ *{name_kaos_custom}* \n Harga: {formatrupiah(harga_kaos_custom)} \n Kustomisasi kaos yang anda inginkan\n\n"
                     f"0️⃣ *Kembali*")
 
     elif user["status"] == "form_tumbler":
@@ -266,10 +274,10 @@ def reply():
             # If the user's choice is not an integer
             res["reply"] += '\n' + ("Tumbler tersedia dalam berbagai volume dan desain.")
             res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk tumbler di bawah ini: \n\nKetik\n\n"
-                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n {link_tumbler_stain} \n\n"
-                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n {link_tumbler_kaca} \n\n"
-                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n {link_tumbler_motif} \n\n"
-                                      f"4️⃣ *{name_tumbler_custom}* \n\n"
+                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n Harga: {formatrupiah(harga_tumbler_stain)} \n {link_tumbler_stain} \n\n"
+                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n Harga: {formatrupiah(harga_tumbler_kaca)} \n {link_tumbler_kaca} \n\n"
+                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n Harga: {formatrupiah(harga_tumbler_motif)} \n {link_tumbler_motif} \n\n"
+                                      f"4️⃣ *{name_tumbler_custom}* \n Harga: {formatrupiah(harga_tumbler_custom)} \n\n"
                                       f"0️⃣ *Kembali*")
             return str(res)
 
@@ -311,12 +319,13 @@ def reply():
             # if the input is exclude the available choice
             res["reply"] += '\n' + ("Harap memasukkan sesuai dengan pilihan yang tersedia\n")
             res["reply"] += '\n\n' + (f"Anda dapat memilih salah satu produk tumbler di bawah ini: \n\nKetik\n\n"
-                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n {link_tumbler_stain} \n\n"
-                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n {link_tumbler_kaca} \n\n"
-                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n {link_tumbler_motif} \n\n"
-                                      f"4️⃣ *{name_tumbler_custom}* \n\n"
+                                      f"1️⃣ *{name_tumbler_stain} - stok: {quantity_tumbler_stain}* \n Harga: {formatrupiah(harga_tumbler_stain)} \n {link_tumbler_stain} \n\n"
+                                      f"2️⃣ *{name_tumbler_kaca} - stok: {quantity_tumbler_kaca}* \n Harga: {formatrupiah(harga_tumbler_kaca)} \n {link_tumbler_kaca} \n\n"
+                                      f"3️⃣ *{name_tumbler_motif} - stok: {quantity_tumbler_motif}* \n Harga: {formatrupiah(harga_tumbler_motif)} \n {link_tumbler_motif} \n\n"
+                                      f"4️⃣ *{name_tumbler_custom}* \n Harga: {formatrupiah(harga_tumbler_custom)} \n\n"
                                       f"0️⃣ *Kembali*")
 
+    # PEMROSESAN FORM INPUTAN PELANGGAN
     elif user["status"] == "pesen_lagi_gak":
     # KAOS
         # Kustom (2)
@@ -385,13 +394,24 @@ def reply():
         n = 1
         res["reply"] += '\n' + ("Pilihan menarik! 😉")
         res["reply"] += '\n\n' + ("Pesanan  Anda: ")
+
+        # MENGHITUNG KESELURUHAN HARGA PESANAN
+        total_harga = 0
+
+        # MENGHITUNG JUMLAH PESANAN YANG DIPESAN
+        jumlah_pesanan_pushed = 0
         
         for item in cart:
+            total_harga_per_item = 0
             if item["item_name"] == "Kaos Polos" or item["item_name"] == "Kaos Motif" or item["item_name"] == "Kaos Jepang":
-                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['ukuran']} - {item['jumlah']}*")
-
                 # GET JUMLAH PESANAN
                 jumlah_pesanan = int(item["jumlah"])
+                jumlah_pesanan_pushed += jumlah_pesanan
+
+                # MENJUMLAHKAN HARGA PESANAN (Harga kaos polos, motif, dan jepang sama)
+                total_harga += harga_kaos_polos * jumlah_pesanan
+                total_harga_per_item += harga_kaos_polos * jumlah_pesanan
+                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['ukuran']} - {item['jumlah']} - {formatrupiah(total_harga_per_item)}*")
 
                 # PENGURANGAN STOK BERDASARKAN UKURAN
                 if item["ukuran"] == "S":
@@ -404,28 +424,63 @@ def reply():
                     items.update_one({"item_name": item_selected}, {"$inc": {"quantity.xl": -jumlah_pesanan}})
                 elif item["ukuran"] == "XXL":
                     items.update_one({"item_name": item_selected}, {"$inc": {"quantity.xxl": -jumlah_pesanan}})
+
+                # MASUKIN KE ORDERS ITEMS
+                orders.update_one({"number": number}, {"$push": {"items": {"item_name": item_selected, "detail_data": {"ukuran": item["ukuran"], "jumlah": item["jumlah"], "harga": total_harga_per_item}}}})
             
             elif item["item_name"] == "Kaos Custom":
-                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['jenis_kaos']} - {item['panjang_lengan']} - {item['ukuran']} - {item['desain']} - {item['jumlah']}*")
-
-                # KUSTOM TIDAK ADA PENGURANGAN STOK
-            
-            elif item["item_name"] == "Tumbler Stainless 600ml" or item["item_name"] == "Tumbler Kaca 1L" or item["item_name"] == "Tumbler Motif 600ml":
-                res["reply"] += '\n' + (f"*{n}. {item['item_name']} {item['jumlah']}*")
-
                 # GET JUMLAH PESANAN
                 jumlah_pesanan = int(item["jumlah"])
+                jumlah_pesanan_pushed += jumlah_pesanan
+
+                # MENJUMLAHKAN HARGA PESANAN
+                total_harga += harga_kaos_custom * jumlah_pesanan
+                total_harga_per_item += harga_kaos_custom * jumlah_pesanan
+                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['jenis_kaos']} - {item['panjang_lengan']} - {item['ukuran']} - {item['desain']} - {item['jumlah']} - {formatrupiah(total_harga_per_item)}*")
+
+                # KUSTOM TIDAK ADA PENGURANGAN STOK
+
+                # MASUKIN KE ORDERS ITEMS
+                orders.update_one({"number": number}, {"$push": {"items": {"item_name": item_selected, "detail_data": {"jenis_kaos": item["jenis_kaos"], "panjang_lengan": item["panjang_lengan"], "ukuran": item["ukuran"], "desain": item["desain"], "jumlah": item["jumlah"], "harga": total_harga_per_item}}}})
+            
+            elif item["item_name"] == "Tumbler Stainless 600ml" or item["item_name"] == "Tumbler Kaca 1L" or item["item_name"] == "Tumbler Motif 600ml":
+                # GET JUMLAH PESANAN
+                jumlah_pesanan = int(item["jumlah"])
+                jumlah_pesanan_pushed += jumlah_pesanan
+
+                # MENJUMLAHKAN HARGA PESANAN (Harga Tumbler Stain, Kaca, dan Motif sama)
+                total_harga += harga_tumbler_stain * jumlah_pesanan
+                total_harga_per_item += harga_tumbler_stain * jumlah_pesanan
+                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['jumlah']} - {formatrupiah(total_harga_per_item)}*")
 
                 # PENGURANGAN STOK 
                 items.update_one({"item_name": item_selected}, {"$inc": {"quantity": -jumlah_pesanan}})
 
+                # MASUKIN KE ORDERS ITEMS
+                orders.update_one({"number": number}, {"$push": {"items": {"item_name": item_selected, "detail_data": {"jumlah": item["jumlah"], "harga": total_harga_per_item}}}})
+
             elif item["item_name"] == "Tumbler Custom":
-                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['volume']} - {item['desain']} - {item['jumlah']}*")
+                # GET JUMLAH PESANAN
+                jumlah_pesanan = int(item["jumlah"])
+                jumlah_pesanan_pushed += jumlah_pesanan
+
+                # MENJUMLAHKAN HARGA PESANAN
+                total_harga += harga_tumbler_custom * jumlah_pesanan
+                total_harga_per_item += harga_tumbler_custom * jumlah_pesanan
+                res["reply"] += '\n' + (f"*{n}. {item['item_name']} - {item['volume']} - {item['desain']} - {item['jumlah']} - {formatrupiah(total_harga_per_item)}*")
                 
                 # KUSTOM TIDAK ADA PENGURANGAN STOK
 
+                # MASUKIN KE ORDERS ITEMS
+                orders.update_one({"number": number}, {"$push": {"items": {"item_name": item_selected, "detail_data": {"volume": item["volume"], "desain": item["desain"], "jumlah": item["jumlah"], "harga": total_harga_per_item}}}})
+
             n += 1
         
+        res["reply"] += '\n\n' + (f"Harga total : *{formatrupiah(total_harga)}*")
+
+        # MASUKIN KE ORDERS REPORTS
+        orders.update_one({"number": number}, {"$set": {"report": {"total_profit": total_harga, "total_sell": jumlah_pesanan_pushed, "average_profit": total_harga / jumlah_pesanan_pushed}}})
+
         res["reply"] += '\n\n' + ("Apakah anda ingin memesan yang lain?\n")
         res["reply"] += '\n' + ("1️⃣ Ya, saya ingin memesan lagi produk lainnya \n2️⃣ Tidak, sudah cukup")      
 
@@ -458,9 +513,13 @@ def reply():
             nama_penerima = text[text.index('Nama Penerima: ') + len('Nama Penerima: '):text.index('\nTelp. Penerima: ')]
             telp_penerima = text[text.index('Telp. Penerima: ') + len('Telp. Penerima: '):]
 
-        # MASUKIN KE ORDERS
+        # MASUKIN WAKTU PAID
+        orders.update_one({"number": number}, {"$set": {"paid_timestamp": datetime.now()}})
 
-        res["reply"] += "\n" +  "Terima kasih telah berbelanja di toko kami! 😊\n"
+        # MASUKIN KE ORDERS RECEIVER IDENTITY
+        orders.update_one({"number": number}, {"$set": {"recevier_identity": {"name": nama_penerima, "telp": telp_penerima, "address": alamat_penerima}}})
+
+        res["reply"] += "\n" +  "Terima kasih telah berbelanja di toko kami! 😊"
         res["reply"] += "\n" +  "Pesanan dapat dibayarkan melalui transfer bank ke rekening berikut:\n"
         res["reply"] += "\n" +  "*Bank Mandiri:*"
         res["reply"] += "\n" +  "No. Rekening: 0987654321"
@@ -482,6 +541,15 @@ def reply():
             {"number": number}, {"$set": {"status": "main"}})
     return str(res)
 
+# Ref : http://pemrograman-sederhana.blogspot.com/2014/09/membuat-format-rupiah-di-bahasa_33.html 
+def formatrupiah(uang):
+    y = str(uang)
+    if len(y) <= 3 :
+        return 'Rp' + y     
+    else :
+        p = y[-3:]
+        q = y[:-3]
+        return formatrupiah(q) + '.' + p
 
 if __name__ == "__main__":
     app.run(port=5000)
