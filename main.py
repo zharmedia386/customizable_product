@@ -478,8 +478,8 @@ def reply():
         
         res["reply"] += '\n\n' + (f"Harga total : *{formatrupiah(total_harga)}*")
 
-        # MASUKIN KE ORDERS REPORTS
-        orders.update_one({"number": number}, {"$set": {"report": {"total_profit": total_harga, "total_sell": jumlah_pesanan_pushed, "average_profit": total_harga / jumlah_pesanan_pushed}}})
+        # MASUKIN KE ORDERS REPORTS DAN MENJUMlAHKAN DENGAN ORDER SEBELUMNYA
+        orders.update_one({"number": number}, {"$inc": {"report": {"total_profit": total_harga, "total_sell": jumlah_pesanan_pushed, "average_profit": total_harga / jumlah_pesanan_pushed}}})
 
         res["reply"] += '\n\n' + ("Apakah anda ingin memesan yang lain?\n")
         res["reply"] += '\n' + ("1️⃣ Ya, saya ingin memesan lagi produk lainnya \n2️⃣ Tidak, sudah cukup")      
